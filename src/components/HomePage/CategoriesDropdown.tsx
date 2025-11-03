@@ -3,6 +3,7 @@ import { type RootState, type AppDispatch } from "../../redux/store";
 import { addFilter, removeFilter } from "../../redux/productsDisplaySlice";
 
 import Dropdown from "react-bootstrap/Dropdown";
+import Button from "react-bootstrap/Button";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Spinner from "react-bootstrap/Spinner";
 import { useQuery } from "@tanstack/react-query";
@@ -34,25 +35,24 @@ const CategoriesDropdown = () => {
     if (isLoading) return <Spinner />;
     if (isError) return <p color="red">Error getting product categories: {error.message}</p>;
     return (
-        <>
+        <div className="d-flex flex-row">
+            <DropdownButton id="dropdown-basic-button" title="Category Filter">
+                {data?.map((categoryName) => (
+                    <Dropdown.Item key={categoryName} onClick={() => handleAddFilter(categoryName)}>
+                        {categoryName}
+                    </Dropdown.Item>
+                ))}
+            </DropdownButton>
             <div>
-                <h1>Current Filters</h1>
-                <ul>
+                <ul className="d-flex flex-row justify-content-between gap-1">
                     {selectedCategories.map((category: string) => (
-                        <li key={category} onClick={() => handleRemoveFilter(category)}>
-                            {category}
-                        </li>
+                        <Button key={category} onClick={() => handleRemoveFilter(category)}>
+                            {category} x
+                        </Button>
                     ))}
                 </ul>
             </div>
-            <DropdownButton id="dropdown-basic-button" title="Category Filter">
-                <Dropdown.Item>
-                    {data?.map((categoryName) => (
-                        <Dropdown.Item onClick={() => handleAddFilter(categoryName)}>{categoryName}</Dropdown.Item>
-                    ))}
-                </Dropdown.Item>
-            </DropdownButton>
-        </>
+        </div>
     );
 };
 
