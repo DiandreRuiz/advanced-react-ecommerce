@@ -9,7 +9,7 @@ const initialState: ProductsDisplayState = {
 };
 
 const productsDisplaySlice = createSlice({
-    name: "products",
+    name: "productsDisplay",
     initialState,
     reducers: {
         addFilter: (state, action: PayloadAction<string>) => {

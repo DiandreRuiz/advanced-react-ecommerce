@@ -20,7 +20,7 @@ const CategoriesDropdown = () => {
     });
 
     // Redux for state management of categories to render
-    const selectedCategories = useSelector((state: RootState) => state.products.productCategoryFilters);
+    const selectedCategories = useSelector((state: RootState) => state.productsDisplay.productCategoryFilters);
     const dispatch = useDispatch<AppDispatch>();
 
     // Filter Change Handlers
