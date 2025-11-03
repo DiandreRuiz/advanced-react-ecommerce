@@ -43,9 +43,6 @@ const ProductsDisplay = () => {
     return (
         <>
             <Row>
-                <Col></Col>
-            </Row>
-            <Row>
                 {validProducts?.map((p) => (
                     <Col key={p.id} xs={12} sm={6} lg={4} xl={3} className="mb-2">
                         <Card className="h-100">
