@@ -3,6 +3,7 @@ import ProductsDisplay from "../ProductsDisplay";
 import CategoriesDropdown from "./CategoriesDropdown";
 
 const HomePageLayout = () => {
+
     return (
         <Container>
             <CategoriesDropdown />

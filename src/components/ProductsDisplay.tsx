@@ -5,6 +5,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
 
 // Product return from the FakeStore API
 type Product = {
@@ -24,11 +26,14 @@ const fetchProducts = async (): Promise<Product[]> => {
 
 // Using useQuery hook to fetch products
 const ProductsDisplay = () => {
-
     const { data, isLoading, isError, error } = useQuery<Product[]>({
         queryKey: ["products"],
         queryFn: fetchProducts,
     });
+
+    // Could probably be moved to parent element: HomePageLayout.tsx
+    const selectedCategories = useSelector((state: RootState) => state.productsDisplay.productCategoryFilters);
+    const validProducts = selectedCategories.length > 0 ? data?.filter((p) => selectedCategories.includes(p.category)) : data;
 
     if (isLoading) return <Spinner />;
     if (isError) {
@@ -41,7 +46,7 @@ const ProductsDisplay = () => {
                 <Col></Col>
             </Row>
             <Row>
-                {data?.map((p) => (
+                {validProducts?.map((p) => (
                     <Col key={p.id} xs={12} sm={6} lg={4} xl={3} className="mb-2">
                         <Card className="h-100">
                             <Card.Img src={p.image} alt={p.title} className="w-50" />
