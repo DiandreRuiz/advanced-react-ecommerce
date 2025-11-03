@@ -13,7 +13,7 @@ const productsDisplaySlice = createSlice({
     initialState,
     reducers: {
         addFilter: (state, action: PayloadAction<string>) => {
-            state.productCategoryFilters = [...state.productCategoryFilters, action.payload];
+            if (!state.productCategoryFilters.includes(action.payload)) state.productCategoryFilters = [...state.productCategoryFilters, action.payload];
         },
         removeFilter: (state, action: PayloadAction<string>) => {
             const newFilters = state.productCategoryFilters.filter((f) => f !== action.payload);

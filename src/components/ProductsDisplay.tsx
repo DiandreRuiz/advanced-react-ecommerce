@@ -22,17 +22,8 @@ const fetchProducts = async (): Promise<Product[]> => {
     return response.data;
 };
 
-const fetchCategories = async (): Promise<string[]> => {
-    const response = await axios.get("https://fakestoreapi.com/products/categories");
-    return response.data;
-};
-
 // Using useQuery hook to fetch products
 const ProductsDisplay = () => {
-    const { categoriesData, categoriesIsLoading, categoriesIsError, categoriesError } = useQuery<string[]>({
-        queryKey: ["categories"],
-        queryFn: fetchCategories,
-    });
 
     const { data, isLoading, isError, error } = useQuery<Product[]>({
         queryKey: ["products"],
