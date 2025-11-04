@@ -21,7 +21,7 @@ const ShoppingCartDropdown = () => {
         <DropdownButton
             id="dropdown-basic-button"
             variant="warning"
-            title={`🛒 $${shoppingCartTotal}`}
+            title={`${parseFloat(shoppingCartTotal) > 0 ? `🛒 $${shoppingCartTotal}` : `🛒`}`}
             className="d-flex"
             show={showCart}
             onToggle={() => setShowCart((prev) => !prev)}
