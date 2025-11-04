@@ -1,36 +1,53 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import Button from "react-bootstrap/Button";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import Dropdown from "react-bootstrap/Dropdown";
 import { removeProduct } from "../redux/shoppingCartSlice";
 import type { AppDispatch } from "../redux/store";
 import type { Product } from "../types";
 
 const ShoppingCartDropdown = () => {
+    const [showCart, setShowCart] = useState<boolean>(false);
+
     // Redux
     const shoppingCartProducts = useSelector((state: RootState) => state.shoppingCart.products);
-    const shoppingCartTotal = useSelector((state: RootState) => parseFloat(state.shoppingCart.totalPrice.toFixed(3)));
+    const shoppingCartTotal = useSelector((state: RootState) => state.shoppingCart.totalPrice.toFixed(2));
     const dispatch = useDispatch<AppDispatch>();
     const handleRemoveProduct = (product: Product) => dispatch(removeProduct(product));
 
     return (
-        <DropdownButton id="dropdown-basic-button" variant="warning" title={`🛒 $${shoppingCartTotal}`}>
+        <DropdownButton
+            id="dropdown-basic-button"
+            variant="warning"
+            title={`🛒 $${shoppingCartTotal}`}
+            className="d-flex"
+            show={showCart}
+            onToggle={() => setShowCart((prev) => !prev)}
+            onBlur={(e) => e.stopPropagation()}
+            autoClose={false}
+        >
             {shoppingCartProducts.length > 0 ? (
                 shoppingCartProducts.map((p) => (
-                    <DropdownItem key={p.id} className="d-flex flex-row align-items-center">
-                        <Button variant="light" className="p-1 me-2 d-flex align-items-center justify-content-center" onClick={() => handleRemoveProduct(p)}>
+                    <DropdownItem
+                        key={p.id}
+                        className="d-flex flex-row align-items-center justify-content-evenly gap-2"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <Button variant="light" className="p-1 me-2 d-flex" onClick={() => handleRemoveProduct(p)}>
                             ❌
                         </Button>
+                        <img src={p.image} alt="👜" style={{ width: "5%" }} />
                         <p className="m-0 flex-grow-1">
-                            {p.title.slice(0, 20)} {parseFloat(p.price.toFixed(3))}
+                            {`${p.title.slice(0, 30).trim()}...`} - {`$${p.price.toFixed(2)}`}
                         </p>
                     </DropdownItem>
                 ))
             ) : (
-                <Dropdown.ItemText className="text-center text-muted w-100 py-2">No Items In Cart!</Dropdown.ItemText>
+                <p>No items in cart!</p>
             )}
+            <Button className="mx-auto">View Cart</Button>
         </DropdownButton>
     );
 };
