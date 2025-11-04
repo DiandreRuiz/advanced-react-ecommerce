@@ -8,15 +8,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 
-// Product return from the FakeStore API
-type Product = {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-    image: string;
-};
+import type { Product } from "../types";
 
 // Fetch function
 const fetchProducts = async (): Promise<Product[]> => {
