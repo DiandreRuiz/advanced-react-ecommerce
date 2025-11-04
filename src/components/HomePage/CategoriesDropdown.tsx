@@ -47,7 +47,7 @@ const CategoriesDropdown = () => {
                 <ul className="d-flex flex-row justify-content-between gap-1">
                     {selectedCategories.map((category: string) => (
                         <Button key={category} onClick={() => handleRemoveFilter(category)} variant="light">
-                            {category} <span style={{color: "red", fontWeight: "bold"}}>x</span>
+                            {category} <span style={{ color: "red", fontWeight: "bold" }}>x</span>
                         </Button>
                     ))}
                 </ul>

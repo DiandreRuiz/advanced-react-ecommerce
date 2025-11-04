@@ -5,10 +5,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import type { RootState } from "../redux/store";
-
 import type { Product } from "../types";
+
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
+import { type AppDispatch } from "../redux/store";
+import { addProduct } from "../redux/shoppingCartSlice";
 
 // Fetch function
 const fetchProducts = async (): Promise<Product[]> => {
@@ -23,8 +25,13 @@ const ProductsDisplay = () => {
         queryFn: fetchProducts,
     });
 
-    // Could probably be moved to parent element: HomePageLayout.tsx
+    // Redux
+    // For category filter
     const selectedCategories = useSelector((state: RootState) => state.productsDisplay.productCategoryFilters);
+    // For add to cart
+    const dispatch = useDispatch<AppDispatch>();
+    const handleAddProduct = (product: Product) => dispatch(addProduct(product));
+
     const validProducts = selectedCategories.length > 0 ? data?.filter((p) => selectedCategories.includes(p.category)) : data;
 
     if (isLoading) return <Spinner />;
@@ -48,7 +55,7 @@ const ProductsDisplay = () => {
                                 <Card.Text className="text-truncate">{p.description}</Card.Text>
                             </Card.Body>
                             <Card.Footer className="d-flex justify-content-center">
-                                <Button className="">Add to Cart</Button>
+                                <Button onClick={() => handleAddProduct(p)}>Add to Cart</Button>
                             </Card.Footer>
                         </Card>
                     </Col>

@@ -17,13 +17,13 @@ const shoppingCartSlice = createSlice({
     name: "shoppingCart",
     initialState,
     reducers: {
-        addItem: (state, action: PayloadAction<Product>) => {
+        addProduct: (state, action: PayloadAction<Product>) => {
             const currentProducts = state.products;
             state.products = [...currentProducts, action.payload];
             state.totalPrice += action.payload.price;
             state.numberOfItems += 1;
         },
-        removeItem: (state, action: PayloadAction<Product>) => {
+        removeProduct: (state, action: PayloadAction<Product>) => {
             const currentProducts = state.products;
             state.products = currentProducts.filter((p) => p.id !== action.payload.id);
             state.totalPrice -= action.payload.price;
@@ -32,5 +32,5 @@ const shoppingCartSlice = createSlice({
     },
 });
 
-export const { addItem, removeItem } = shoppingCartSlice.actions;
+export const { addProduct, removeProduct } = shoppingCartSlice.actions;
 export default shoppingCartSlice.reducer;
