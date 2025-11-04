@@ -14,7 +14,9 @@ const ShoppingCartDropdown = () => {
     // Redux
     const shoppingCartProducts = useSelector((state: RootState) => state.shoppingCart.products);
     const shoppingCartQuantities = useSelector((state: RootState) => state.shoppingCart.quantities);
+    const shoppingCartNumberOfItems = useSelector((state: RootState) => state.shoppingCart.numberOfItems);
     const shoppingCartTotal = useSelector((state: RootState) => state.shoppingCart.totalPrice.toFixed(2));
+    const displayTotal = parseFloat(shoppingCartTotal) > 0 ? `$${shoppingCartTotal}` : `$0.00`;
     const dispatch = useDispatch<AppDispatch>();
     const handleRemoveProduct = (product: Product) => dispatch(removeProduct(product));
     const handleAddProduct = (product: Product) => dispatch(addProduct(product));
@@ -24,7 +26,7 @@ const ShoppingCartDropdown = () => {
         <DropdownButton
             id="dropdown-basic-button"
             variant="warning"
-            title={`${parseFloat(shoppingCartTotal) > 0 ? `🛒 $${shoppingCartTotal}` : `🛒`}`}
+            title={`🛒 ${shoppingCartNumberOfItems}`}
             className="d-flex"
             show={showCart}
             onToggle={() => setShowCart((prev) => !prev)}
@@ -55,9 +57,11 @@ const ShoppingCartDropdown = () => {
                     </DropdownItem>
                 ))
             ) : (
-                <p>No items in cart!</p>
+                <p className="ms-4">No items in cart!</p>
             )}
-            <Button className="mx-auto">View Cart</Button>
+            <Button className="mx-3 mt-2 mb-1">
+                Checkout <b>{displayTotal}</b>
+            </Button>
         </DropdownButton>
     );
 };
