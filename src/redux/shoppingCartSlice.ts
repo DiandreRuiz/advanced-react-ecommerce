@@ -59,8 +59,11 @@ const shoppingCartSlice = createSlice({
                 console.error(`Attempted clearning of productID ${id} however no instances were found`);
             }
         },
+        checkoutCart: () => {
+            return initialState;
+        },
     },
 });
 
-export const { addProduct, removeProduct, clearProduct } = shoppingCartSlice.actions;
+export const { addProduct, removeProduct, clearProduct, checkoutCart } = shoppingCartSlice.actions;
 export default shoppingCartSlice.reducer;

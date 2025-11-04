@@ -4,7 +4,7 @@ import type { RootState } from "../redux/store";
 import Button from "react-bootstrap/Button";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import { removeProduct, addProduct, clearProduct } from "../redux/shoppingCartSlice";
+import { removeProduct, addProduct, clearProduct, checkoutCart } from "../redux/shoppingCartSlice";
 import type { AppDispatch } from "../redux/store";
 import type { Product } from "../types";
 
@@ -21,6 +21,7 @@ const ShoppingCartDropdown = () => {
     const handleRemoveProduct = (product: Product) => dispatch(removeProduct(product));
     const handleAddProduct = (product: Product) => dispatch(addProduct(product));
     const handleClearProduct = (product: Product) => dispatch(clearProduct(product));
+    const handleCheckoutCart = () => dispatch(checkoutCart());
 
     return (
         <DropdownButton
@@ -59,7 +60,7 @@ const ShoppingCartDropdown = () => {
             ) : (
                 <p className="ms-4">No items in cart!</p>
             )}
-            <Button className="mx-3 mt-2 mb-1">
+            <Button className="mx-3 mt-2 mb-1" onClick={() => handleCheckoutCart()}>
                 Checkout <b>{displayTotal}</b>
             </Button>
         </DropdownButton>
