@@ -24,10 +24,17 @@ const shoppingCartSlice = createSlice({
             state.numberOfItems += 1;
         },
         removeProduct: (state, action: PayloadAction<Product>) => {
-            const currentProducts = state.products;
-            state.products = currentProducts.filter((p) => p.id !== action.payload.id);
-            state.totalPrice -= action.payload.price;
-            state.numberOfItems -= 1;
+            const instancesOfProduct = state.products.filter((p) => p.id === action.payload.id);
+            if (instancesOfProduct.length > 0) {
+                instancesOfProduct.pop();
+                state.products = [...state.products.filter((p) => p.id !== action.payload.id), ...instancesOfProduct];
+                state.totalPrice -= action.payload.price;
+                state.numberOfItems -= 1;
+            } else {
+                console.error(
+                    `Attempted removal of product ID ${action.payload.id} however no instances of that product were found`
+                );
+            }
         },
     },
 });

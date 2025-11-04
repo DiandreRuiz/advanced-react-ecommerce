@@ -29,9 +29,9 @@ const ShoppingCartDropdown = () => {
             autoClose={false}
         >
             {shoppingCartProducts.length > 0 ? (
-                shoppingCartProducts.map((p) => (
+                shoppingCartProducts.map((p, i) => (
                     <DropdownItem
-                        key={p.id}
+                        key={`prod-${String(p.id)}-${i}`}
                         className="d-flex flex-row align-items-center justify-content-evenly gap-2"
                         onClick={(e) => e.stopPropagation()}
                     >
