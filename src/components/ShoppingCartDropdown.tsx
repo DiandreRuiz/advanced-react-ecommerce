@@ -4,7 +4,7 @@ import type { RootState } from "../redux/store";
 import Button from "react-bootstrap/Button";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import { removeProduct } from "../redux/shoppingCartSlice";
+import { removeProduct, addProduct, clearProduct } from "../redux/shoppingCartSlice";
 import type { AppDispatch } from "../redux/store";
 import type { Product } from "../types";
 
@@ -13,9 +13,12 @@ const ShoppingCartDropdown = () => {
 
     // Redux
     const shoppingCartProducts = useSelector((state: RootState) => state.shoppingCart.products);
+    const shoppingCartQuantities = useSelector((state: RootState) => state.shoppingCart.quantities);
     const shoppingCartTotal = useSelector((state: RootState) => state.shoppingCart.totalPrice.toFixed(2));
     const dispatch = useDispatch<AppDispatch>();
     const handleRemoveProduct = (product: Product) => dispatch(removeProduct(product));
+    const handleAddProduct = (product: Product) => dispatch(addProduct(product));
+    const handleClearProduct = (product: Product) => dispatch(clearProduct(product));
 
     return (
         <DropdownButton
@@ -35,8 +38,15 @@ const ShoppingCartDropdown = () => {
                         className="d-flex flex-row align-items-center justify-content-evenly gap-2"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Button variant="light" className="p-1 me-2 d-flex" onClick={() => handleRemoveProduct(p)}>
+                        <Button variant="light" className="p-1 me-2 d-flex" onClick={() => handleClearProduct(p)}>
                             ❌
+                        </Button>
+                        <Button variant="light" className="p-1 d-flex" onClick={() => handleRemoveProduct(p)}>
+                            -
+                        </Button>
+                        {shoppingCartQuantities[p.id]}
+                        <Button variant="light" className="p-1 me-2 d-flex" onClick={() => handleAddProduct(p)}>
+                            +
                         </Button>
                         <img src={p.image} alt="👜" style={{ width: "5%" }} />
                         <p className="m-0 flex-grow-1">
