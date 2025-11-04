@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+# Advanced React E-Commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce application built with React, TypeScript, and Redux Toolkit, featuring product catalog browsing, category filtering, and shopping cart functionality.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Product Catalog
+- **Product Listing**: Browse all products with details including title, price, category, description, rating, and images
+- **Category Navigation**: Dynamic dropdown that fetches categories from the API and filters products by selected category
+- **Image Fallback**: Automatic placeholder image display when product images fail to load (handles 404 errors gracefully)
 
-## React Compiler
+### Shopping Cart
+- **Add to Cart**: Add products directly from the product listing page
+- **Cart Management**: View, update quantities, and remove items from the shopping cart
+- **Persistent Storage**: Shopping cart data persists across browser sessions using sessionStorage
+- **Real-time Updates**: Dynamic calculation and display of total items and total price
+- **Checkout**: Simulated checkout process that clears the cart and provides visual feedback
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **React 19** with TypeScript
+- **Vite** for build tooling
+- **Redux Toolkit** for state management
+- **React Query (TanStack Query)** for data fetching and caching
+- **React Bootstrap** for UI components
+- **Axios** for HTTP requests
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📦 Installation
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd advanced-react-ecommerce
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies:
+```bash
+npm install
 ```
+
+## 🏃 Running the Application
+
+### Development Mode
+```bash
+npm run dev
+```
+The application will be available at `http://localhost:5173` (or the port shown in your terminal).
+
+### Build for Production
+```bash
+npm run build
+```
+
+### Preview Production Build
+```bash
+npm run preview
+```
+
+## 📡 API
+
+This application uses the [FakeStore API](https://fakestoreapi.com/) for product data:
+
+- **All Products**: `GET https://fakestoreapi.com/products`
+- **All Categories**: `GET https://fakestoreapi.com/products/categories`
+- **Products by Category**: `GET https://fakestoreapi.com/products/category/{category}`
+
+## 📝 Notes
+
+- Some image URLs from the FakeStore API may return 404 errors. The application automatically displays placeholder images when this occurs.
+- Shopping cart data is stored in `sessionStorage` and persists across page refreshes within the same browser session.
+- The checkout process is simulated (FakeStore API doesn't support order processing) and clears the cart state.
+
+## 🧪 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
