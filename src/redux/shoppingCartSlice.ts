@@ -6,11 +6,11 @@ interface ShoppingCartState {
     numberOfItems: number;
     totalPrice: number;
 }
-const startingZeroFloat = 0.0;
+
 const initialState: ShoppingCartState = {
     products: [],
     numberOfItems: 0,
-    totalPrice: parseFloat(startingZeroFloat.toFixed(2)),
+    totalPrice: 0.0,
 };
 
 const shoppingCartSlice = createSlice({
@@ -20,13 +20,13 @@ const shoppingCartSlice = createSlice({
         addItem: (state, action: PayloadAction<Product>) => {
             const currentProducts = state.products;
             state.products = [...currentProducts, action.payload];
-            state.totalPrice += parseFloat(action.payload.price.toFixed(2));
+            state.totalPrice += action.payload.price;
             state.numberOfItems += 1;
         },
         removeItem: (state, action: PayloadAction<Product>) => {
             const currentProducts = state.products;
             state.products = currentProducts.filter((p) => p.id !== action.payload.id);
-            state.totalPrice -= parseFloat(action.payload.price.toFixed(2));
+            state.totalPrice -= action.payload.price;
             state.numberOfItems -= 1;
         },
     },
