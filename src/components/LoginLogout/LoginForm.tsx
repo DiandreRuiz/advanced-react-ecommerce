@@ -25,6 +25,7 @@ const LoginForm = () => {
         <form onSubmit={handleLogin}>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+            <button type="submit">Login</button>
             {error && <p>{error}</p>}
         </form>
     );
