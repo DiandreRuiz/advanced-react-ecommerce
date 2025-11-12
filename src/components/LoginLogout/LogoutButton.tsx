@@ -1,5 +1,6 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
+import Button from "react-bootstrap/Button";
 
 const LogoutButton = () => {
     const handleLogout = async () => {
@@ -11,7 +12,7 @@ const LogoutButton = () => {
         }
     };
 
-    return <button onClick={handleLogout}>Logout</button>;
+    return <Button onClick={handleLogout}>Logout</Button>;
 };
 
 export default LogoutButton;
