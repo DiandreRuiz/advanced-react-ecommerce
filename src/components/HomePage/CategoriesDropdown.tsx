@@ -36,7 +36,7 @@ const CategoriesDropdown = () => {
     if (isError) return <p color="red">Error getting product categories: {error.message}</p>;
     return (
         <div className="d-flex flex-row">
-            <DropdownButton id="dropdown-basic-button" title="Category Filter ">
+            <DropdownButton id="dropdown-basic-button" title="Category Filter" className="mb-3">
                 {data?.map((categoryName) => (
                     <Dropdown.Item key={categoryName} onClick={() => handleAddFilter(categoryName)}>
                         {categoryName}
@@ -44,7 +44,7 @@ const CategoriesDropdown = () => {
                 ))}
             </DropdownButton>
             <div>
-                <ul className="d-flex flex-row justify-content-between gap-1">
+                <ul className="d-flex flex-row justify-content-between gap-1 mb-3">
                     {selectedCategories.map((category: string) => (
                         <Button key={category} onClick={() => handleRemoveFilter(category)} variant="light">
                             {category} <span style={{ color: "red", fontWeight: "bold" }}>x</span>
