@@ -25,7 +25,6 @@ const LoginForm = () => {
 
     return (
         <div className="m">
-            <h3 className="text-center">Login</h3>
             <Form onSubmit={handleLogin} className="bg-light p-3">
                 <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>

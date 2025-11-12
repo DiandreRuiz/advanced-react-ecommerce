@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
@@ -65,7 +64,6 @@ const Register = () => {
 
     return (
         <>
-            <h3 className="text-center">Register</h3>
             <div className="bg-light p-3 rounded">
                 <Form onSubmit={handleRegister}>
                     <Form.Group className="mb-3" controlId="formName">
