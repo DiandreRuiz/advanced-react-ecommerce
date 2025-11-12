@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
+import Form from "react-bootstrap/Form";
 
 interface User {
     id?: string;
@@ -61,20 +62,38 @@ const Register = () => {
     };
 
     return (
-        <form onSubmit={handleRegister}>
-            <input name="name" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
-            <input name="email" type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input
-                name="password"
-                type="password"
-                placeholder="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit">Register</button>
-            {addUserDataError && <p>{addUserDataError}</p>}
-            {registerUserError && <p>{registerUserError}</p>}
-        </form>
+        <>
+            <form onSubmit={handleRegister}>
+                <input name="name" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
+                <input
+                    name="email"
+                    type="email"
+                    placeholder="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                    name="password"
+                    type="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button type="submit">Register</button>
+                {addUserDataError && <p>{addUserDataError}</p>}
+                {registerUserError && <p>{registerUserError}</p>}
+            </form>
+            <Form>
+                <Form.Group className="mb-3" controlId="formName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control name="name" value={name} onChange={(e) => setName(e.target.value)} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </Form.Group>
+            </Form>
+        </>
     );
 };
 

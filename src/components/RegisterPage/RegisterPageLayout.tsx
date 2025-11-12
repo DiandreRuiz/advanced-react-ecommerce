@@ -7,7 +7,7 @@ const RegisterPageLayout = () => {
     return (
         <Container>
             <Row>
-                <Col>
+                <Col md={4}>
                     <Register />
                 </Col>
             </Row>
