@@ -27,7 +27,7 @@ const LoginForm = () => {
         <div className="m">
             <h3 className="text-center">Login</h3>
             <Form onSubmit={handleLogin} className="bg-light p-3">
-                <Form.Group>
+                <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </Form.Group>
@@ -35,7 +35,9 @@ const LoginForm = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
-                <Button type="submit">Login</Button>
+                <Button type="submit" className="mt-3 d-block mx-auto">
+                    Login
+                </Button>
                 {error && <p>{error}</p>}
             </Form>
         </div>
