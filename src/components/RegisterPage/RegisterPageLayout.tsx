@@ -6,7 +6,7 @@ import Register from "./Register";
 const RegisterPageLayout = () => {
     return (
         <Container>
-            <Row>
+            <Row className="justify-content-center mt-5">
                 <Col md={4}>
                     <Register />
                 </Col>
