@@ -1,59 +1,38 @@
 import { useState, type FormEvent } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { type ProfileUser } from "../../types";
 
 const Register = () => {
     // Firebase Auth Form State
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [name, setName] = useState<string>("");
-    const [registerUserError, setRegisterUserError] = useState<string | null>(null);
-
-    // Firestore State
-    const [addUserData, setAddUserData] = useState<Omit<ProfileUser, "id">>({ name: "", email: "", password: "" });
-    const [addUserDataError, setAddUserDataError] = useState<string | null>(null);
-
-    const handleUpdateUserData = () => {
-        setAddUserData({
-            name: name,
-            email: email,
-            password: password,
-        });
-    };
+    const [error, setError] = useState<string | null>(null);
 
     const handleRegister = async (e: FormEvent) => {
         e.preventDefault();
 
-        // Store data according to interface when form is submitted
-        // to prepare for doc creation
-        handleUpdateUserData();
-
-        // Add new User document to 'user' collection in Firestore
         try {
-            await addDoc(collection(db, "users"), addUserData);
+            const userCreds = await createUserWithEmailAndPassword(auth, email, password);
+            alert("Succesfully Created User!");
+            await setDoc(doc(db, "users", userCreds.user.uid), {
+                name,
+                email,
+                password,
+            });
             alert("User data added!");
         } catch (error) {
             if (error instanceof Error) {
-                setAddUserDataError(error.message);
+                setError(error.message);
             } else {
-                setAddUserDataError(String(error));
+                setError(String(error));
             }
         }
 
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            alert("Succesfully Created User!");
-        } catch (error) {
-            if (error instanceof Error) {
-                setRegisterUserError(error.message);
-            } else {
-                setRegisterUserError(String(error));
-            }
-        }
+        // Add new User document to 'user' collection in Firestore
     };
 
     return (
@@ -81,8 +60,7 @@ const Register = () => {
                         Register
                     </Button>
                 </Form>
-                {addUserDataError && <p>{addUserDataError}</p>}
-                {registerUserError && <p>{registerUserError}</p>}
+                {error && <p>{error}</p>}
             </div>
         </>
     );
