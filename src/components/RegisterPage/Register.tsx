@@ -4,13 +4,7 @@ import { auth, db } from "../../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
-interface User {
-    id?: string;
-    name: string;
-    email: string;
-    password: string;
-}
+import { type ProfileUser } from "../../types";
 
 const Register = () => {
     // Firebase Auth Form State
@@ -20,7 +14,7 @@ const Register = () => {
     const [registerUserError, setRegisterUserError] = useState<string | null>(null);
 
     // Firestore State
-    const [addUserData, setAddUserData] = useState<Omit<User, "id">>({ name: "", email: "", password: "" });
+    const [addUserData, setAddUserData] = useState<Omit<ProfileUser, "id">>({ name: "", email: "", password: "" });
     const [addUserDataError, setAddUserDataError] = useState<string | null>(null);
 
     const handleUpdateUserData = () => {

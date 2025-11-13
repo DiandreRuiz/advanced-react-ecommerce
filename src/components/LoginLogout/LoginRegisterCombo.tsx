@@ -1,6 +1,6 @@
 import { useState } from "react";
-import LoginForm from "./LoginLogout/LoginForm";
-import Register from "./RegisterPage/Register";
+import LoginForm from "./LoginForm";
+import Register from "../RegisterPage/Register";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Container from "react-bootstrap/Container";
