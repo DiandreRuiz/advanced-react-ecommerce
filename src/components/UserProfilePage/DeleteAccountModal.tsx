@@ -11,9 +11,10 @@ import Form from "react-bootstrap/Form";
 type DeleteAccountModalProps = {
     show: boolean;
     user: User;
+    handleCloseModal: () => void;
 };
 
-const DeleteAccountModal = ({ show, user }: DeleteAccountModalProps) => {
+const DeleteAccountModal = ({ show, user, handleCloseModal }: DeleteAccountModalProps) => {
     const accountDeletionMessage = "Please enter your password to delete your account...";
     const [passwordEntry, setPasswordEntry] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
@@ -38,11 +39,16 @@ const DeleteAccountModal = ({ show, user }: DeleteAccountModalProps) => {
     };
 
     return (
-        <Modal show={show}>
-            <Modal.Header>Delete Account?</Modal.Header>
-            <Modal.Body>{accountDeletionMessage}</Modal.Body>
-            <Form.Control value={passwordEntry} onChange={(e) => setPasswordEntry(e.target.value)} />
-            <Button variant="danger" onClick={handleAccountDeletion}>
+        <Modal show={show} onHide={handleCloseModal} className="text-center">
+            <Modal.Header closeButton>Delete Account?</Modal.Header>
+            <Modal.Body className="text-danger">{accountDeletionMessage}</Modal.Body>
+            <Form.Control
+                type="password"
+                className="w-75 mx-auto"
+                value={passwordEntry}
+                onChange={(e) => setPasswordEntry(e.target.value)}
+            />
+            <Button variant="danger" onClick={handleAccountDeletion} className="w-50 m-3 mx-auto">
                 Delete Account
             </Button>
             {error && <p>{error}</p>}

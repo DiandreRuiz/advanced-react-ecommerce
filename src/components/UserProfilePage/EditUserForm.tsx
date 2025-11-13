@@ -49,6 +49,10 @@ const EditUserForm = () => {
         fetchData();
     }, [fetchData]);
 
+    const handleCloseModal = () => {
+        setShowAccountDeletionModal(false);
+    };
+
     const updateUser = async () => {
         const updateInfoFormValidate = (): boolean => {
             const issues: string[] = [];
@@ -100,7 +104,7 @@ const EditUserForm = () => {
 
     return (
         <>
-            <DeleteAccountModal show={showAccountDeletionModal} user={user} />
+            <DeleteAccountModal show={showAccountDeletionModal} user={user} handleCloseModal={handleCloseModal} />
             <Form onSubmit={handleSubmit} className="bg-light p-3">
                 <h1 className="text-center">Edit User</h1>
                 <Form.Group className="mb-3">
