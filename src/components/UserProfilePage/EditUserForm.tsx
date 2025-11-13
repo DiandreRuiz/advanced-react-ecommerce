@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, type FormEvent } from "react";
 import { useFirebaseAuth } from "../LoginLogout/FirebaseAuthProvider";
 import { db } from "../../firebaseConfig";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -96,6 +96,19 @@ const EditUserForm = () => {
         updateUser();
     };
 
+    const handleAccountDeletion = async () => {
+        try {
+            await deleteDoc(doc(db, "users", user.uid));
+            alert(`Account associated with ${user.email} deleted!`);
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(`Could not delete account!: ${error.message}`);
+            } else {
+                setError(`Could not delete account!: ${String(error)}`);
+            }
+        }
+    };
+
     return (
         <Form onSubmit={handleSubmit} className="bg-light p-3">
             <h1 className="text-center">Edit User</h1>
@@ -124,8 +137,11 @@ const EditUserForm = () => {
                     onChange={(e) => setPasswordConfirmation(e.target.value)}
                 />
             </Form.Group>
-            <Button type="submit" className="mt-3 d-block mx-auto">
+            <Button type="submit" className="mt-3 mb-3 d-block mx-auto">
                 Save
+            </Button>
+            <Button variant="outline-danger" className="d-block mx-auto" onClick={handleAccountDeletion}>
+                Delete Account
             </Button>
             {error ? <p>{error instanceof Error ? error.message : String(error)}</p> : null}
         </Form>

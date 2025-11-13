@@ -10,7 +10,7 @@ const NavBar = () => {
             <Container className="d-flex justify-content-center">
                 <Navbar.Toggle aria-controls="basic-navbar-nav" color="black" />
                 <Navbar.Collapse className="w-auto flex-grow-0">
-                    <Nav className="text-center">
+                    <Nav className="text-center me-5">
                         <Nav.Link as={NavLink} to="/">
                             Home
                         </Nav.Link>
