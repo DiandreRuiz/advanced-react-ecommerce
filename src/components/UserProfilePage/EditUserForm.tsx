@@ -48,14 +48,15 @@ const EditUserForm = () => {
     }, [fetchData]);
 
     const updateUser = async () => {
-        const passwordCheck = (): boolean => {
-            const passwordChanged = !!password;
-            const passwordConfirmationMatch = password === passwordConfirmation;
-            if (!passwordChanged) {
-                return false;
-            }
-            if (!passwordConfirmationMatch) {
-                alert("Password & Confirm Password must match! Password not updated.");
+        const updateInfoFormValidate = (): boolean => {
+            const issues: string[] = [];
+
+            if (!name) issues.push("All profiles must have a First Name!");
+            if (!email) issues.push("All profiles must have an associated Email!");
+            if (!!password && password !== passwordConfirmation) issues.push("Password & Confirm Password must match!");
+
+            if (issues.length > 0) {
+                alert(issues.join("\n")); // join each message on a new line
                 return false;
             }
 
@@ -65,11 +66,15 @@ const EditUserForm = () => {
         const updatedUserDoc = doc(db, "users", user.uid);
 
         try {
+            // Form Validation
+            if (!updateInfoFormValidate()) return;
+
             await updateDoc(updatedUserDoc, {
-                address: address,
+                address: address ? address : null,
                 name: name,
                 email: email,
-                ...(passwordCheck() && { password: password }),
+                // password confirmation checked in form validation above
+                ...(!!password && { password: password }),
             });
             await fetchData();
         } catch (error) {
