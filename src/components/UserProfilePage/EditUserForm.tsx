@@ -1,10 +1,14 @@
 import { useState, useEffect, type FormEvent } from "react";
 import Form from "react-bootstrap/Form";
 import type { ProfileUser } from "../../types";
+import { useFirebaseAuth } from "../LoginLogout/FirebaseAuthProvider";
 import { db } from "../../firebaseConfig";
-import { getDocs, collection } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
 const EditUserForm = () => {
+    // Firebase auth context
+    const { user } = useFirebaseAuth();
+
     const [address, setAddress] = useState<string>("");
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -12,11 +16,9 @@ const EditUserForm = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const querySnapshot = await getDocs(collection(db, "users"));
-            const dataArray = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            })) as ProfileUser[];
+            if (!user) throw Error("Unable to find current signed in user!");
+            const userDocRef = doc(db, "users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
         };
     });
 

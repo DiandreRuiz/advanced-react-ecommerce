@@ -40,7 +40,7 @@ const Register = () => {
             <div className="bg-light p-3 rounded">
                 <Form onSubmit={handleRegister}>
                     <Form.Group className="mb-3" controlId="formName">
-                        <Form.Label>Name</Form.Label>
+                        <Form.Label>First Name</Form.Label>
                         <Form.Control name="name" value={name} onChange={(e) => setName(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formEmail">
