@@ -66,8 +66,11 @@ const EditUserForm = () => {
         const updatedUserDoc = doc(db, "users", user.uid);
 
         try {
-            // Form Validation
-            if (!updateInfoFormValidate()) return;
+            // Form Validation & re-fetching of data
+            if (!updateInfoFormValidate()) {
+                fetchData();
+                return;
+            }
 
             await updateDoc(updatedUserDoc, {
                 address: address ? address : null,
@@ -76,6 +79,8 @@ const EditUserForm = () => {
                 // password confirmation checked in form validation above
                 ...(!!password && { password: password }),
             });
+
+            alert("Succesfully Updated User Information!");
             await fetchData();
         } catch (error) {
             if (error instanceof Error) {
@@ -93,6 +98,7 @@ const EditUserForm = () => {
 
     return (
         <Form onSubmit={handleSubmit} className="bg-light p-3">
+            <h1 className="text-center">Edit User</h1>
             <Form.Group className="mb-3">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
