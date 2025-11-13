@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback, type FormEvent } from "react";
 import { useFirebaseAuth } from "../LoginLogout/FirebaseAuthProvider";
 import { db } from "../../firebaseConfig";
-import { getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { getDoc, doc, updateDoc } from "firebase/firestore";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 const EditUserForm = () => {
     // Firebase auth context
@@ -16,6 +17,7 @@ const EditUserForm = () => {
     const [password, setPassword] = useState<string>("");
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
     const [error, setError] = useState<unknown | null>(null);
+    const [showAccountDeletionModal, setShowAccountDeletionModal] = useState<boolean>(false);
 
     if (!user) {
         throw Error("Unable to find current signed in user!");
@@ -96,55 +98,49 @@ const EditUserForm = () => {
         updateUser();
     };
 
-    const handleAccountDeletion = async () => {
-        try {
-            await deleteDoc(doc(db, "users", user.uid));
-            alert(`Account associated with ${user.email} deleted!`);
-        } catch (error) {
-            if (error instanceof Error) {
-                setError(`Could not delete account!: ${error.message}`);
-            } else {
-                setError(`Could not delete account!: ${String(error)}`);
-            }
-        }
-    };
-
     return (
-        <Form onSubmit={handleSubmit} className="bg-light p-3">
-            <h1 className="text-center">Edit User</h1>
-            <Form.Group className="mb-3">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </Form.Group>
-            <Form.Group className="mb-5">
-                <Form.Label>Address</Form.Label>
-                <Form.Control value={address} onChange={(e) => setAddress(e.target.value)} />
-            </Form.Group>
-            <hr className="mb-5" />
-            <Form.Group className="mb-3">
-                <Form.Label>Change Password</Form.Label>
-                <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                    type="password"
-                    value={passwordConfirmation}
-                    onChange={(e) => setPasswordConfirmation(e.target.value)}
-                />
-            </Form.Group>
-            <Button type="submit" className="mt-3 mb-3 d-block mx-auto">
-                Save
-            </Button>
-            <Button variant="outline-danger" className="d-block mx-auto" onClick={handleAccountDeletion}>
-                Delete Account
-            </Button>
-            {error ? <p>{error instanceof Error ? error.message : String(error)}</p> : null}
-        </Form>
+        <>
+            <DeleteAccountModal show={showAccountDeletionModal} user={user} />
+            <Form onSubmit={handleSubmit} className="bg-light p-3">
+                <h1 className="text-center">Edit User</h1>
+                <Form.Group className="mb-3">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </Form.Group>
+                <Form.Group className="mb-5">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control value={address} onChange={(e) => setAddress(e.target.value)} />
+                </Form.Group>
+                <hr className="mb-5" />
+                <Form.Group className="mb-3">
+                    <Form.Label>Change Password</Form.Label>
+                    <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        value={passwordConfirmation}
+                        onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    />
+                </Form.Group>
+                <Button type="submit" className="mt-3 mb-3 d-block mx-auto">
+                    Save
+                </Button>
+                <Button
+                    variant="outline-danger"
+                    className="d-block mx-auto"
+                    onClick={() => setShowAccountDeletionModal((prev) => !prev)}
+                >
+                    Delete Account
+                </Button>
+                {error ? <p>{error instanceof Error ? error.message : String(error)}</p> : null}
+            </Form>
+        </>
     );
 };
 
