@@ -14,6 +14,7 @@ const EditUserForm = () => {
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
     const [error, setError] = useState<unknown | null>(null);
 
     if (!user) {
@@ -31,7 +32,6 @@ const EditUserForm = () => {
             setAddress(fetchedAddress ? fetchedAddress : "");
             setName(userDocSnap.get("name"));
             setEmail(userDocSnap.get("email"));
-            setPassword(userDocSnap.get("password"));
         } catch (error) {
             if (error instanceof Error) {
                 setError(`Could not fetch current state of user information: ${error.message}`);
@@ -48,9 +48,29 @@ const EditUserForm = () => {
     }, [fetchData]);
 
     const updateUser = async () => {
+        const passwordCheck = (): boolean => {
+            const passwordChanged = !!password;
+            const passwordConfirmationMatch = password === passwordConfirmation;
+            if (!passwordChanged) {
+                return false;
+            }
+            if (!passwordConfirmationMatch) {
+                alert("Password & Confirm Password must match! Password not updated.");
+                return false;
+            }
+
+            return true;
+        };
+
         const updatedUserDoc = doc(db, "users", user.uid);
+
         try {
-            await updateDoc(updatedUserDoc, { address: address, name: name, email: email, password: password });
+            await updateDoc(updatedUserDoc, {
+                address: address,
+                name: name,
+                email: email,
+                ...(passwordCheck() && { password: password }),
+            });
             await fetchData();
         } catch (error) {
             if (error instanceof Error) {
@@ -76,13 +96,22 @@ const EditUserForm = () => {
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-5">
                 <Form.Label>Address</Form.Label>
                 <Form.Control value={address} onChange={(e) => setAddress(e.target.value)} />
             </Form.Group>
-            <Form.Group>
-                <Form.Label>Password</Form.Label>
+            <hr className="mb-5" />
+            <Form.Group className="mb-3">
+                <Form.Label>Change Password</Form.Label>
                 <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                    type="password"
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                />
             </Form.Group>
             <Button type="submit" className="mt-3 d-block mx-auto">
                 Save
