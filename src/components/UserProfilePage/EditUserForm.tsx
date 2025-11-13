@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback, type FormEvent } from "react";
-import Form from "react-bootstrap/Form";
-import type { ProfileUser } from "../../types";
 import { useFirebaseAuth } from "../LoginLogout/FirebaseAuthProvider";
 import { db } from "../../firebaseConfig";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+
 const EditUserForm = () => {
     // Firebase auth context
-    const { user, loading, error } = useFirebaseAuth();
+    const { user } = useFirebaseAuth();
 
     const [address, setAddress] = useState<string>("");
     const [name, setName] = useState<string>("");
@@ -64,6 +65,31 @@ const EditUserForm = () => {
         e.preventDefault();
         updateUser();
     };
+
+    return (
+        <Form onSubmit={handleSubmit} className="bg-light p-3">
+            <Form.Group className="mb-3">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Address</Form.Label>
+                <Form.Control value={address} onChange={(e) => setAddress(e.target.value)} />
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </Form.Group>
+            <Button type="submit" className="mt-3 d-block mx-auto">
+                Save
+            </Button>
+            {error ? <p>{error instanceof Error ? error.message : String(error)}</p> : null}
+        </Form>
+    );
 };
 
 export default EditUserForm;

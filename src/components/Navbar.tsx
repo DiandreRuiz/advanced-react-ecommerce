@@ -14,6 +14,9 @@ const NavBar = () => {
                         <Nav.Link as={NavLink} to="/">
                             Home
                         </Nav.Link>
+                        <Nav.Link as={NavLink} to="user-profile">
+                            Profile
+                        </Nav.Link>
                     </Nav>
                     <LogoutButton />
                 </Navbar.Collapse>
