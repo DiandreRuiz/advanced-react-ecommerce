@@ -14,8 +14,11 @@ const NavBar = () => {
                         <Nav.Link as={NavLink} to="/">
                             Home
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="user-profile">
+                        <Nav.Link as={NavLink} to="/user-profile">
                             Profile
+                        </Nav.Link>
+                        <Nav.Link as={NavLink} to="/orders">
+                            Orders
                         </Nav.Link>
                     </Nav>
                     <LogoutButton />

@@ -6,8 +6,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import { useFirebaseAuth } from "./components/LoginLogout/FirebaseAuthProvider";
+
 import LoginRegisterCombo from "./components/LoginLogout/LoginRegisterCombo";
 import EditUserFormLayout from "./components/UserProfilePage/EditUserFormLayout";
+import OrdersDisplayLayout from "./components/OrdersDisplayPage/OrdersDisplayLayout";
 
 function App() {
     const { user, loading, error } = useFirebaseAuth();
@@ -32,6 +34,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<HomePageLayout />} />
                         <Route path="/user-profile" element={<EditUserFormLayout />} />
+                        <Route path="/orders" element={<OrdersDisplayLayout />} />
                     </Routes>
                 </>
             ) : (
