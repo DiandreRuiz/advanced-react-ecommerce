@@ -22,6 +22,10 @@ const fetchOrders = async (): Promise<Order[]> => {
     }
 };
 
+// NOTE:
+// WE ARE DOING LOTS OF EXTRA WORK HERE, GOING THROUGH TO FILTER BASED ON USERID IS
+// CAUSING O(N) TO BE O(2N) WHICH IN THEORY IS FINE, BUT WILL GET REALLY SLOW...
+
 // Using useQuery to fetch orders
 const OrdersDisplay = () => {
     const { data, isLoading, isError, error } = useQuery<Order[]>({
@@ -37,7 +41,7 @@ const OrdersDisplay = () => {
     return (
         <>
             {data?.map((order) => (
-                <Card id={order.id}>
+                <Card key={order.id}>
                     <Card.Header>Order #: {order.id}</Card.Header>
                     <Card.Body>
                         <ul>
