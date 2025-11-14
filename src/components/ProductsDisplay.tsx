@@ -4,18 +4,24 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import axios from "axios";
+import { collection, getDocs } from "firebase/firestore";
 import type { Product } from "../types";
 
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import { type AppDispatch } from "../redux/store";
 import { addProduct } from "../redux/shoppingCartSlice";
+import { db } from "../firebaseConfig";
 
 // Fetch function
 const fetchProducts = async (): Promise<Product[]> => {
-    const response = await axios.get("https://fakestoreapi.com/products");
-    return response.data;
+    const collectionRef = collection(db, "products");
+    const querySnapshot = await getDocs(collectionRef);
+    const productsArray = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+    })) as Product[];
+
+    return productsArray;
 };
 
 // Using useQuery hook to fetch products
