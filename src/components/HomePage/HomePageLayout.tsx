@@ -9,10 +9,10 @@ const HomePageLayout = () => {
     return (
         <Container>
             <Row>
-                <Col xs={3} lg={1}>
+                <Col xs={2} md={2} lg={1}>
                     <ShoppingCartDropdown />
                 </Col>
-                <Col xs={3} lg={1}>
+                <Col xs={2} md={2} lg={1}>
                     <CategoriesDropdown />
                 </Col>
             </Row>
