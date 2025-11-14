@@ -21,7 +21,14 @@ const ShoppingCartDropdown = () => {
     const handleRemoveProduct = (product: Product) => dispatch(removeProduct(product));
     const handleAddProduct = (product: Product) => dispatch(addProduct(product));
     const handleClearProduct = (product: Product) => dispatch(clearProduct(product));
-    const handleCheckoutCart = () => dispatch(checkoutCart());
+    const clearCheckoutCart = () => dispatch(checkoutCart());
+
+    const handleCheckoutCart = async () => {
+        // Clear cart to simulate checkout process
+        clearCheckoutCart();
+        // Add order to orders in firestore
+        
+    };
 
     return (
         <DropdownButton

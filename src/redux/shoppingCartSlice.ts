@@ -60,7 +60,7 @@ const shoppingCartSlice = createSlice({
             }
         },
         checkoutCart: () => {
-            
+            return initialState;
         },
     },
 });
