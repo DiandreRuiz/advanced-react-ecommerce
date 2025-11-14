@@ -24,4 +24,6 @@ export interface Order {
     creationDateTime: Date;
     total: number;
     numberOfItems: number;
+    products: Product[];
+    productQuantities: Record<number, number>;
 }
