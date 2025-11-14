@@ -31,8 +31,19 @@ const ShoppingCartDropdown = () => {
     const handleClearProduct = (product: Product) => dispatch(clearProduct(product));
     const clearCheckoutCart = () => dispatch(checkoutCart());
 
-    // Firebase
+    // Firebase Context
     const { user } = useFirebaseAuth();
+
+    const orderSubmissionStateUpdate = (beginOrEnd: string) => {
+        if (beginOrEnd === "begin") {
+            setError(null);
+            setSuccess(false);
+            setIsLoadingSubmitOrder(true);
+        } else if (beginOrEnd === "end") {
+            setIsLoadingSubmitOrder(false);
+            setSuccess(true);
+        }
+    };
 
     const createOrderRecord = (): Order => {
         const currentDateTime = new Date();
@@ -47,17 +58,14 @@ const ShoppingCartDropdown = () => {
     };
 
     const handleCheckoutCart = async () => {
-        // Add order to orders in firestore
-        setError(null);
-        setSuccess(false);
-        setIsLoadingSubmitOrder(true);
+        orderSubmissionStateUpdate("begin"); // Grouped state updates
+
         const collectionRef = collection(db, "orders");
         const orderRecord = createOrderRecord();
         try {
             await addDoc(collectionRef, orderRecord);
-            setIsLoadingSubmitOrder(false);
+            orderSubmissionStateUpdate("end");
             clearCheckoutCart(); // Clear cart to simulate checkout process
-            setSuccess(true);
         } catch (error) {
             setError(`Could not submit order from current cart! ${String(error)}`);
         }
