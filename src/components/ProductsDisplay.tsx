@@ -41,7 +41,7 @@ const ProductsDisplay = () => {
     const validProducts =
         selectedCategories.length > 0 ? data?.filter((p) => selectedCategories.includes(p.category)) : data;
 
-    if (isLoading) return <Spinner />;
+    if (isLoading) return <Spinner className="d-block mx-auto mt-5" />;
     if (isError) {
         console.log(String(error));
         return <p color="red">Error loading products! {error.message}</p>;

@@ -9,7 +9,7 @@ const HomePageLayout = () => {
     return (
         <Container>
             <Row>
-                <Col>
+                <Col md={1}>
                     <ShoppingCartDropdown />
                 </Col>
                 <Col>

@@ -32,16 +32,21 @@ const CategoriesDropdown = () => {
         dispatch(removeFilter(filterName));
     };
 
-    if (isLoading) return <Spinner />;
     if (isError) return <p color="red">Error getting product categories: {error.message}</p>;
     return (
         <div className="d-flex flex-row">
             <DropdownButton id="dropdown-basic-button" title="Category Filter" className="mb-3">
-                {data?.map((categoryName) => (
-                    <Dropdown.Item key={categoryName} onClick={() => handleAddFilter(categoryName)}>
-                        {categoryName}
-                    </Dropdown.Item>
-                ))}
+                {isLoading ? (
+                    <Spinner />
+                ) : (
+                    <>
+                        {data?.map((categoryName) => (
+                            <Dropdown.Item key={categoryName} onClick={() => handleAddFilter(categoryName)}>
+                                {categoryName}
+                            </Dropdown.Item>
+                        ))}
+                    </>
+                )}
             </DropdownButton>
             <div>
                 <ul className="d-flex flex-row justify-content-between gap-1 mb-3">
