@@ -21,7 +21,7 @@ const NavBar = () => {
                             Orders
                         </Nav.Link>
                     </Nav>
-                    <div className="mt-1">
+                    <div className="mt-1 mb-1">
                         <LogoutButton />
                     </div>
                 </Navbar.Collapse>
