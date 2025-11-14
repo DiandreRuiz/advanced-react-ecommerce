@@ -11,6 +11,7 @@ import type { Order, Product } from "../types";
 
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { useFirebaseAuth } from "./LoginLogout/FirebaseAuthProvider";
 
 const ShoppingCartDropdown = () => {
     const [showCart, setShowCart] = useState<boolean>(false);
@@ -30,9 +31,13 @@ const ShoppingCartDropdown = () => {
     const handleClearProduct = (product: Product) => dispatch(clearProduct(product));
     const clearCheckoutCart = () => dispatch(checkoutCart());
 
+    // Firebase
+    const { user } = useFirebaseAuth();
+
     const createOrderRecord = (): Order => {
         const currentDateTime = new Date();
         return {
+            userId: user?.uid,
             creationDateTime: currentDateTime,
             total: parseFloat(shoppingCartTotal),
             numberOfItems: shoppingCartNumberOfItems,
@@ -103,11 +108,7 @@ const ShoppingCartDropdown = () => {
                     Checkout <b>{displayTotal}</b>
                 </Button>
             )}
-            {success && (
-                <p className="text-center text-success mt-3">
-                    Order Submitted!
-                </p>
-            )}
+            {success && <p className="text-center text-success mt-3">Order Submitted!</p>}
             {error && <p>{String(error)}</p>}
         </DropdownButton>
     );

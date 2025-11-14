@@ -21,6 +21,7 @@ export interface ProfileUser {
 // Order that was placed by "checking out" with the shopping cart
 export interface Order {
     id?: string;
+    userId: string;
     creationDateTime: Date;
     total: number;
     numberOfItems: number;
