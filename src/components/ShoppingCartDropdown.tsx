@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
+import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import { removeProduct, addProduct, clearProduct, checkoutCart } from "../redux/shoppingCartSlice";
 import type { AppDispatch } from "../redux/store";
-import type { Product } from "../types";
+import type { Order, Product } from "../types";
+
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 const ShoppingCartDropdown = () => {
     const [showCart, setShowCart] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoadingSubmitOrder, setIsLoadingSubmitOrder] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
 
     // Redux
     const shoppingCartProducts = useSelector((state: RootState) => state.shoppingCart.products);
@@ -23,11 +30,32 @@ const ShoppingCartDropdown = () => {
     const handleClearProduct = (product: Product) => dispatch(clearProduct(product));
     const clearCheckoutCart = () => dispatch(checkoutCart());
 
+    const createOrderRecord = (): Order => {
+        const currentDateTime = new Date();
+        return {
+            creationDateTime: currentDateTime,
+            total: parseFloat(shoppingCartTotal),
+            numberOfItems: shoppingCartNumberOfItems,
+            products: shoppingCartProducts,
+            productQuantities: shoppingCartQuantities,
+        } as Order;
+    };
+
     const handleCheckoutCart = async () => {
-        // Clear cart to simulate checkout process
-        clearCheckoutCart();
         // Add order to orders in firestore
-        
+        setError(null);
+        setSuccess(false);
+        setIsLoadingSubmitOrder(true);
+        const collectionRef = collection(db, "orders");
+        const orderRecord = createOrderRecord();
+        try {
+            await addDoc(collectionRef, orderRecord);
+            setIsLoadingSubmitOrder(false);
+            clearCheckoutCart(); // Clear cart to simulate checkout process
+            setSuccess(true);
+        } catch (error) {
+            setError(`Could not submit order from current cart! ${String(error)}`);
+        }
     };
 
     return (
@@ -66,11 +94,21 @@ const ShoppingCartDropdown = () => {
                     </DropdownItem>
                 ))
             ) : (
-                <p className="ms-4">No items in cart!</p>
+                <p className="ms-4 mt-3">No items in cart!</p>
             )}
-            <Button className="mx-3 mt-2 mb-1" onClick={() => handleCheckoutCart()}>
-                Checkout <b>{displayTotal}</b>
-            </Button>
+            {isLoadingSubmitOrder ? (
+                <Spinner className="mx-3 mt-2 mb-1" />
+            ) : (
+                <Button className="mx-3 mt-2 mb-1" onClick={() => handleCheckoutCart()}>
+                    Checkout <b>{displayTotal}</b>
+                </Button>
+            )}
+            {success && (
+                <p className="text-center text-success mt-3">
+                    Order Submitted!
+                </p>
+            )}
+            {error && <p>{String(error)}</p>}
         </DropdownButton>
     );
 };
