@@ -21,7 +21,7 @@ const fetchProducts = async (): Promise<Product[]> => {
 // Using useQuery hook to fetch products
 const ProductsDisplay = () => {
     const { data, isLoading, isError, error } = useQuery<Product[]>({
-        queryKey: ["products"],
+        queryKey: ["products", "firestore"],
         queryFn: fetchProducts,
     });
 
@@ -32,7 +32,8 @@ const ProductsDisplay = () => {
     const dispatch = useDispatch<AppDispatch>();
     const handleAddProduct = (product: Product) => dispatch(addProduct(product));
 
-    const validProducts = selectedCategories.length > 0 ? data?.filter((p) => selectedCategories.includes(p.category)) : data;
+    const validProducts =
+        selectedCategories.length > 0 ? data?.filter((p) => selectedCategories.includes(p.category)) : data;
 
     if (isLoading) return <Spinner />;
     if (isError) {
