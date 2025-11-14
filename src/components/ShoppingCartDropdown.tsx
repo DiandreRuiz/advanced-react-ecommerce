@@ -31,6 +31,7 @@ const ShoppingCartDropdown = () => {
             className="d-flex"
             show={showCart}
             onToggle={() => setShowCart((prev) => !prev)}
+            // We change blur behavior to require user to manually close cart
             onBlur={(e) => e.stopPropagation()}
             autoClose={false}
         >
