@@ -5,6 +5,11 @@ import { collection, getDocs } from "firebase/firestore";
 
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
+import { useFirebaseAuth } from "../LoginLogout/FirebaseAuthProvider";
+
+// NOTE:
+// WE ARE DOING LOTS OF EXTRA WORK HERE, GOING THROUGH TO FILTER BASED ON USERID IS
+// CAUSING O(N) TO BE O(2N) WHICH IN THEORY IS FINE, BUT WILL GET REALLY SLOW...
 
 // Fetch Function
 const fetchOrders = async (): Promise<Order[]> => {
@@ -15,16 +20,11 @@ const fetchOrders = async (): Promise<Order[]> => {
             id: doc.id,
             ...doc.data(),
         })) as Order[];
-
         return ordersArray;
     } catch (error) {
         throw new Error(`Could not retrieve 'orders': ${error instanceof Error ? error.message : String(error)}`);
     }
 };
-
-// NOTE:
-// WE ARE DOING LOTS OF EXTRA WORK HERE, GOING THROUGH TO FILTER BASED ON USERID IS
-// CAUSING O(N) TO BE O(2N) WHICH IN THEORY IS FINE, BUT WILL GET REALLY SLOW...
 
 // Using useQuery to fetch orders
 const OrdersDisplay = () => {
@@ -32,17 +32,19 @@ const OrdersDisplay = () => {
         queryKey: ["orders"],
         queryFn: fetchOrders,
     });
+    const { user } = useFirebaseAuth();
+    const filteredOrders = data?.filter((order) => order.userId === user?.uid);
 
-    if (isLoading) return <Spinner />;
+    if (isLoading) return <Spinner className="d-block mx-auto mt-5" />;
     if (isError) {
         console.error(String(error));
         return <p color="red">Error loading orders! {error.message}</p>;
     }
     return (
         <>
-            {data?.map((order) => (
+            {filteredOrders?.map((order) => (
                 <Card key={order.id}>
-                    <Card.Header>Order #: {order.id}</Card.Header>
+                    <Card.Header>Order # {order.id}</Card.Header>
                     <Card.Body>
                         <ul>
                             {order.products.map((p) => (
