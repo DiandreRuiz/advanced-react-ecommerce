@@ -112,7 +112,11 @@ const ShoppingCartDropdown = () => {
             {isLoadingSubmitOrder ? (
                 <Spinner className="mx-3 mt-2 mb-1" />
             ) : (
-                <Button className="mx-3 mt-2 mb-1" onClick={() => handleCheckoutCart()}>
+                <Button
+                    className="mx-3 mt-2 mb-1"
+                    onClick={() => handleCheckoutCart()}
+                    hidden={shoppingCartNumberOfItems < 1}
+                >
                     Checkout <b>{displayTotal}</b>
                 </Button>
             )}
