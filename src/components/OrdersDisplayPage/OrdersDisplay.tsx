@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { db } from "../../firebaseConfig";
 import { type Order } from "../../types";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +9,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
 import { useFirebaseAuth } from "../LoginLogout/FirebaseAuthProvider";
+import IndividualOrderDisplayModal from "./IndividualOrderDisplayModal";
 
 // NOTE:
 // WE ARE DOING LOTS OF EXTRA WORK HERE, GOING THROUGH TO FILTER BASED ON USERID IS
@@ -36,6 +38,7 @@ const OrdersDisplay = () => {
     });
     const { user } = useFirebaseAuth();
     const filteredOrders = data?.filter((order) => order.userId === user?.uid);
+    const [showIndividualModal, setShowIndividualModal] = useState<boolean>(false);
 
     if (isLoading) return <Spinner className="d-block mx-auto mt-5" />;
     if (isError) {
@@ -44,31 +47,32 @@ const OrdersDisplay = () => {
     }
     return (
         <>
-            {filteredOrders?.map((order) => (
-                <Card key={order.id} className="mb-3">
-                    <Card.Header>
-                        <b>Order # {order.id}</b>
-                        <br />
-                        {order.creationDateTime.toDate().toLocaleString(undefined, {
-                            dateStyle: "short",
-                            timeStyle: "short",
-                        })}
-                        <br />
-                        <br />
-                        <p>Order Total: ${order.total}</p>
-                    </Card.Header>
-                    <Card.Body className="p-0 pt-3">
-                        <ul>
-                            {order.products.map((p) => (
-                                <li key={p.title}>
-                                    {p.title} x{order.productQuantities[p.id]}
-                                </li>
-                            ))}
-                        </ul>
-                    </Card.Body>
-                    <Button className="w-25 d-block mx-auto mb-3">Order Details</Button>
-                </Card>
-            ))}
+            <IndividualOrderDisplayModal show={showIndividualModal} />
+            <div>
+                {filteredOrders?.map((order) => (
+                    <Card key={order.id} className="mb-3">
+                        <Card.Header>
+                            <b>Order # {order.id}</b>
+                            <br />
+                            {order.creationDateTime.toDate().toLocaleString(undefined, {
+                                dateStyle: "short",
+                                timeStyle: "short",
+                            })}
+                            <p className="mt-2 mb-0">Order Total: ${order.total}</p>
+                            <Button className="mb-2 mt-2 btn-sm">Order Details</Button>
+                        </Card.Header>
+                        <Card.Body className="p-0 pt-3">
+                            <ul>
+                                {order.products.map((p) => (
+                                    <li key={p.title}>
+                                        {p.title} x{order.productQuantities[p.id]}
+                                    </li>
+                                ))}
+                            </ul>
+                        </Card.Body>
+                    </Card>
+                ))}
+            </div>
         </>
     );
 };
