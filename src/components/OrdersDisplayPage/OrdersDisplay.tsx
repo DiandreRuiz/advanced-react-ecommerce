@@ -44,7 +44,13 @@ const OrdersDisplay = () => {
         <>
             {filteredOrders?.map((order) => (
                 <Card key={order.id}>
-                    <Card.Header>Order # {order.id}</Card.Header>
+                    <Card.Header>
+                        Order # {order.id} :{" "}
+                        {order.creationDateTime.toDate().toLocaleString(undefined, {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                        })}
+                    </Card.Header>
                     <Card.Body>
                         <ul>
                             {order.products.map((p) => (
