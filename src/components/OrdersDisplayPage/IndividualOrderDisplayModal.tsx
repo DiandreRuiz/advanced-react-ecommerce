@@ -24,9 +24,10 @@ const IndividualOrderDisplayModal = ({ show, selectedOrder, onHide }: Individual
             <Modal.Body>
                 {selectedOrder?.products.map((p) => (
                     <p key={p.id}>
-                        <img src={p.image} style={{ width: "20px" }}></img> {p.title}{" "}
+                        <img src={p.image} style={{ width: "20px" }} /> {p.title}
+                        <br />${p.price}
                         <b>
-                            {"(x"}
+                            {" (x"}
                             {selectedOrder.productQuantities[p.id]}
                             {")"}
                         </b>

@@ -87,7 +87,7 @@ const ShoppingCartDropdown = () => {
                 shoppingCartProducts.map((p, i) => (
                     <DropdownItem
                         key={`prod-${String(p.id)}-${i}`}
-                        className="d-flex flex-row align-items-center justify-content-evenly gap-2"
+                        className="d-flex flex-row align-items-center justify-content-evenly gap-2 me-5"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <Button variant="light" className="p-1 me-2 d-flex" onClick={() => handleClearProduct(p)}>
