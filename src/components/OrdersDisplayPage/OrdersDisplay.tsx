@@ -5,6 +5,8 @@ import { collection, getDocs } from "firebase/firestore";
 
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+
 import { useFirebaseAuth } from "../LoginLogout/FirebaseAuthProvider";
 
 // NOTE:
@@ -43,15 +45,19 @@ const OrdersDisplay = () => {
     return (
         <>
             {filteredOrders?.map((order) => (
-                <Card key={order.id}>
+                <Card key={order.id} className="mb-3">
                     <Card.Header>
-                        Order # {order.id} :{" "}
+                        <b>Order # {order.id}</b>
+                        <br />
                         {order.creationDateTime.toDate().toLocaleString(undefined, {
-                            dateStyle: "medium",
+                            dateStyle: "short",
                             timeStyle: "short",
                         })}
+                        <br />
+                        <br />
+                        <p>Order Total: ${order.total}</p>
                     </Card.Header>
-                    <Card.Body>
+                    <Card.Body className="p-0 pt-3">
                         <ul>
                             {order.products.map((p) => (
                                 <li key={p.title}>
@@ -60,6 +66,7 @@ const OrdersDisplay = () => {
                             ))}
                         </ul>
                     </Card.Body>
+                    <Button className="w-25 d-block mx-auto mb-3">Order Details</Button>
                 </Card>
             ))}
         </>
