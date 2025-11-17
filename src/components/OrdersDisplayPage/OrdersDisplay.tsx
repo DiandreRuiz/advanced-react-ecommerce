@@ -39,6 +39,16 @@ const OrdersDisplay = () => {
     const { user } = useFirebaseAuth();
     const filteredOrders = data?.filter((order) => order.userId === user?.uid);
     const [showIndividualModal, setShowIndividualModal] = useState<boolean>(false);
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+    const handleIndividualOrderModalHide = () => {
+        setShowIndividualModal(false);
+    };
+
+    const handleSelectOrder = (order: Order) => {
+        setSelectedOrder(order);
+        setShowIndividualModal(true);
+    };
 
     if (isLoading) return <Spinner className="d-block mx-auto mt-5" />;
     if (isError) {
@@ -47,7 +57,11 @@ const OrdersDisplay = () => {
     }
     return (
         <>
-            <IndividualOrderDisplayModal show={showIndividualModal} />
+            <IndividualOrderDisplayModal
+                show={showIndividualModal}
+                selectedOrder={selectedOrder}
+                onHide={handleIndividualOrderModalHide}
+            />
             <div>
                 {filteredOrders?.map((order) => (
                     <Card key={order.id} className="mb-3">
@@ -58,17 +72,16 @@ const OrdersDisplay = () => {
                                 dateStyle: "short",
                                 timeStyle: "short",
                             })}
-                            <p className="mt-2 mb-0">Order Total: ${order.total}</p>
-                            <Button className="mb-2 mt-2 btn-sm">Order Details</Button>
+                            <br />
+                            <p className="mb-0">${order?.total}</p>
+                            <Button className="mb-2 mt-2 btn-sm d-block" onClick={() => handleSelectOrder(order)}>
+                                Order Details
+                            </Button>
                         </Card.Header>
-                        <Card.Body className="p-0 pt-3">
-                            <ul>
-                                {order.products.map((p) => (
-                                    <li key={p.title}>
-                                        {p.title} x{order.productQuantities[p.id]}
-                                    </li>
-                                ))}
-                            </ul>
+                        <Card.Body className="p-3 d-flex gap-3">
+                            {order.products.map((p) => (
+                                <img key={p.title} src={p.image} style={{ height: "80px" }} />
+                            ))}
                         </Card.Body>
                     </Card>
                 ))}
