@@ -9,7 +9,7 @@ import { removeProduct, addProduct, clearProduct, checkoutCart } from "../redux/
 import type { AppDispatch } from "../redux/store";
 import type { Order, Product } from "../types";
 
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { useFirebaseAuth } from "./LoginLogout/FirebaseAuthProvider";
 
@@ -46,7 +46,9 @@ const ShoppingCartDropdown = () => {
     };
 
     const createOrderRecord = (): Order => {
-        const currentDateTime = new Date();
+        const dataPrecursor = new Date();
+        const currentDateTime = new Timestamp(dataPrecursor.getSeconds(), dataPrecursor.getMilliseconds());
+
         return {
             userId: user?.uid,
             creationDateTime: currentDateTime,

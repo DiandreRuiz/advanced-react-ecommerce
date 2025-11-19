@@ -1,3 +1,5 @@
+import type { Timestamp } from "firebase/firestore";
+
 // Product return from the FakeStore API
 export type Product = {
     id: number;
@@ -22,7 +24,7 @@ export interface ProfileUser {
 export interface Order {
     id?: string;
     userId: string;
-    creationDateTime: Date;
+    creationDateTime: Timestamp;
     total: number;
     numberOfItems: number;
     products: Product[];
