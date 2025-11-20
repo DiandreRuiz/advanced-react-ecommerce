@@ -15,6 +15,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 
 describe("LoginForm Component", () => {
+    
     beforeEach(() => {
         jest.clearAllMocks();
     });

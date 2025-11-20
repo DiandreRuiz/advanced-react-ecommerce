@@ -13,7 +13,7 @@ const Context = createContext<AuthContext>({ user: null, loading: true, error: n
 export const FirebaseAuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<unknown | null>(null);
+    const [error, setError] = useState<unknown | null>(null); 
 
     useEffect(() => {
         const unsub = onAuthStateChanged(
